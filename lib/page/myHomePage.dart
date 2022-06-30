@@ -14,14 +14,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-  ];
+  final List<Transaction> _transactions = [];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
       return tr.date.isAfter(
         DateTime.now().subtract(
-         const Duration(days: 7),
+          const Duration(days: 7),
         ),
       );
     }).toList();
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  _removeTransaction(String id){
+  _removeTransaction(String id) {
     setState(() {
       _transactions.removeWhere((tr) {
         return tr.id == id;
@@ -56,28 +56,58 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(   
-        title: const Text("Despesas Pessoais"),
-        actions: [
+    bool isLandsScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: Text(
+        "Despesas Pessoais",
+        style: TextStyle(
+          fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+        ),
+      ),
+      actions: [
+        if (isLandsScape)
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
             onPressed: () {
-              _openTransctionFormModal(context);
+              setState(() {
+                _showChart = !_showChart;
+              });
             },
-          )
-        ],
-      ),  
+          ),
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            _openTransctionFormModal(context);
+          },
+        ),
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(transactions: _transactions, onRemove: _removeTransaction,),
+            if (_showChart || !isLandsScape)
+              SizedBox(
+                height: availableHeight * (isLandsScape ? 0.7 : 0.25),
+                child: Chart(_recentTransactions),
+              ),
+            if (!_showChart || !isLandsScape)
+              SizedBox(
+                  height: availableHeight * 0.75,
+                  child: TransactionList(
+                    transactions: _transactions,
+                    onRemove: _removeTransaction,
+                  )),
           ],
         ),
       ),
