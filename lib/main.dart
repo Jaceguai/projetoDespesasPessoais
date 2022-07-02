@@ -1,4 +1,3 @@
-
 import 'package:despesas_pessoais/page/myHomePage.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
@@ -21,7 +20,7 @@ class ExpensesApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
-      supportedLocales: const [ Locale("pt", "BR")],
+      supportedLocales: const [Locale("pt", "BR")],
       debugShowCheckedModeBanner: false,
       home: const MyHomePage(),
       theme: tema.copyWith(
@@ -52,4 +51,3 @@ class ExpensesApp extends StatelessWidget {
     );
   }
 }
-

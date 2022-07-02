@@ -53,7 +53,8 @@ class _TransactionFormState extends State<TransactionForm> {
               label: "Valor (R\$)",
             ),
             AdaptativeDatePicker(
-                selectedDate: selectedDate, onDateChanged: (newDate) {
+                selectedDate: selectedDate,
+                onDateChanged: (newDate) {
                   setState(() {
                     selectedDate = newDate;
                   });
