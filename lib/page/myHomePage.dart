@@ -126,14 +126,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return Platform.isIOS
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-              middle: Text("Despesas Pessoais"),
+              middle: const Text("Despesas Pessoais"),
               trailing: Row(mainAxisSize: MainAxisSize.min, children: actions),
             ),
             child: bodyPage,
           )
         : Scaffold(
             appBar: appBar,
-            body: bodyPage,
+            body: bodyPage,  
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
